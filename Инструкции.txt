@@ -1,0 +1,52 @@
+- прежде чем устанавливать обязательно выбрать ссылки в  настройках\постоянные ссылки выбрать там пост
+
+----------------------------------------------------------------------------------------------------------------------------
+
+вставляем в functions.php если в статусе отуствует галочка поддержка вуукомерс
+
+также этот код делает так, что стили подключаются только если плагин активен.
+
+
+if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+    function mytheme_add_woocommerce_support() {
+	add_theme_support( 'woocommerce' );
+}
+add_action( 'after_setup_theme', 'mytheme_add_woocommerce_support' );
+} 
+
+----------------------------------------------------------------------------------------------------------------------------
+
+Код Для svg иконок пишется в functions.php      или ставим плагин safe svg Автор: Daryll Doyle
+
+add_filter( 'upload_mimes', 'svg_upload_allow' );
+
+# Добавляет SVG в список разрешенных для загрузки файлов.
+function svg_upload_allow( $mimes ) {
+	$mimes['svg']  = 'image/svg+xml';
+
+	return $mimes;
+}
+
+add_filter( 'wp_check_filetype_and_ext', 'fix_svg_mime_type', 10, 5 );
+
+function fix_svg_mime_type( $data, $file, $filename, $mimes, $real_mime = '' ){
+
+	// WP 5.1 +
+	if( version_compare( $GLOBALS['wp_version'], '5.1.0', '>=' ) )
+		$dosvg = in_array( $real_mime, [ 'image/svg', 'image/svg+xml' ] );
+	else
+		$dosvg = ( '.svg' === strtolower( substr($filename, -4) ) );
+
+	if( $dosvg ){
+		if( current_user_can('manage_options') ){
+			$data['ext']  = 'svg';
+			$data['type'] = 'image/svg+xml';
+		}
+		else {
+			$data['ext'] = $type_and_ext['type'] = false;
+		}
+	}
+	return $data;
+}
+
+----------------------------------------------------------------------------------------------------------------------------
