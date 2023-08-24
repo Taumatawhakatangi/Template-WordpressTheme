@@ -77,4 +77,29 @@
 <img src="<?php echo $redux_blago['id']['url']; ?>" alt="header-picture"> <br>
 <!-- Вот так выводятся картинки в Редуксе -->
 
+<?= CFS()->get('id');?>
+<!-- Эта функция нужна для вывода полей custom field suite --> <br>
+<?php
+	$loop = CFS()->get('slider');
+	foreach ($loop as $row) {
+		?>
+		<div class="instructions__item">
+            <div class="instructions__inner">
+            	<span class="instructions__icon">
+            		<img src="<?= $row['slider-icon'] ?>" alt="">
+            	</span>
+            	<span class="instructions__text">
+            		<?= $row['slider-text'] ?>
+            	</span>
+            	<span class="instructions__counter">
+            		<?= $row['slider-count'] ?>
+            	</span>
+            </div>
+      	</div>
+		<?php
+	}
+?>
+<!-- Это для повторителя. Этот цикл выводит слайды с готовой конструкцией custom field suite --> <br>
+
+
 <!-- Шаблоны -->
